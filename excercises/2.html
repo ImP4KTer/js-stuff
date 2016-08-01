@@ -17,11 +17,17 @@
 <script type="text/javascript">
     //1. TODO: using document.write() or document.createElement() output 100 divs.
     // each div should contain the sum of natural numbers from 0 to the div's index (indexes from 0 - 99)
+    for(var i = 0; i < 100; i++)
+        document.write("<div class='div1'>"+ i*(i+1)/2+"</div>");
 
     var colors = [
             'red', 'blue', 'white', '#00aeef', '#ff0000', '#ffffff', 'yellow', 'green'
     ];
     //2. TODO: modify the script so that each div will have a random background color from the "colors" array
+
+    var wtf = document.getElementsByClassName('div1');
+    for ( var i = 0; i < 100; i++ )
+        wtf.item( i ).style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
 
 </script>
 </body>
