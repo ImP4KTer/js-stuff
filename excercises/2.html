@@ -17,10 +17,23 @@
 <script type="text/javascript">
     //1. TODO: using document.write() or document.createElement() output 100 divs.
     // each div should contain the sum of natural numbers from 0 to the div's index (indexes from 0 - 99)
-
     var colors = [
-            'red', 'blue', 'white', '#00aeef', '#ff0000', '#ffffff', 'yellow', 'green'
+        'red', 'blue', 'white', '#00aeef', '#ff0000', '#ffffff', 'yellow', 'green'
     ];
+
+    var sum = function(index){
+        var sum=0;
+        for (var i=0; i<=index; i++)
+            sum=sum+i;
+        return sum;
+    };
+
+    for (var i=0; i<100; i++){
+        var div=document.createElement('div');
+        div.innerHTML=sum(i);
+        document.body.appendChild(div);
+        div.style.backgroundColor=colors[Math.floor(Math.random()*colors.length)];
+    }
     //2. TODO: modify the script so that each div will have a random background color from the "colors" array
 
 </script>
