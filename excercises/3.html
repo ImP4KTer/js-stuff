@@ -6,6 +6,7 @@
         body {
             text-align: center;
         }
+
         .counter > span {
             display: inline-block;
             width: 40px;
@@ -25,13 +26,13 @@
 <p>Current time is: </p>
 
 <div class="counter">
-    <span class="hour">22</span>
+    <span id="hour">22</span>
     <span class="sep">:</span>
-    <span class="minute">23</span>
+    <span id="minute">23</span>
     <span class="sep">:</span>
-    <span class="second">23</span>
+    <span id="second">23</span>
     <span class="sep">.</span>
-    <span class="millisecond">333</span>
+    <span id="millisecond">333</span>
 </div>
 
 <script type="text/javascript">
@@ -39,7 +40,44 @@
     // The clock should display the real browser time, and update on each passed millisecond
     // in order to achieve this, read the javascript window object reference from here: http://www.w3schools.com/jsref/obj_window.asp
     // in particular, setInterval() and setTimeout()
+    var currentDate = new Date();
 
+    var miliseconds = currentDate.getMilliseconds();
+    var seconds = currentDate.getSeconds();
+    var minutes = currentDate.getMinutes();
+    var hours = currentDate.getHours();
+    var h = document.getElementById("hour");
+    var m = document.getElementById("minute");
+    var s = document.getElementById("second");
+    var mm = document.getElementById("millisecond");
+
+    var start = new Date().getTime();
+    window.setInterval(function () {
+        var now = new Date().getTime();
+
+        miliseconds += now - start;
+        if (miliseconds >= 1000) {
+            miliseconds = 0;
+            seconds++;
+        }
+        if (seconds == 60) {
+            seconds = 0;
+            minutes++;
+        }
+        if (minutes == 60) {
+            minutes = 0;
+            hours++;
+        }
+        if (hours == 24) {
+            hours = 0;
+        }
+
+        h.innerHTML = hours;
+        m.innerHTML = minutes;
+        s.innerHTML = seconds;
+        mm.innerHTML = miliseconds;
+        start = now;
+    }, 1);
 </script>
 
 </body>
