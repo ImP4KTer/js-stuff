@@ -39,7 +39,7 @@
 
 <input type="text" class="text-input" id="email" value="Enter your email here">
 
-<input type="text" name="Address" class="text-input" value="Enter your address here">
+<input type="text" id="text2" name="Address" class="text-input" value="Enter your address here">
 
 <hr>
 <input type="text" placeholder="This is how it should work">
@@ -51,6 +51,11 @@
         color: blue;
         background-color: red;
     }
+
+    .text-input{
+        opacity: 0.6;
+    }
+
 </style>
 
 <script type="text/javascript">
@@ -92,10 +97,25 @@
         target_div.innerHTML = e.target.value;
     };
 
+
+
+
     function placeholder( input, default_value ) {
         input.onfocus = function( e ) {
             if ( this.value === default_value ) {
+//                setCaretPosition(this,0);
+            }
+        }
+        input.onkeydown = function( e ) {
+            if ( this.value === default_value ) {
                 this.value = '';
+                this.style.opacity = 1.0;
+            }
+        }
+        input.onkeyup = function( e ) {
+            if ( this.value === "" ) {
+                this.value = default_value;
+                this.style.opacity = 0.6;
             }
         }
         input.onblur = function( e ) {
