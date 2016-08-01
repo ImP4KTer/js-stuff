@@ -19,6 +19,8 @@
 
     var a = ['text1', 'a', 'b', 'aa', 'aaa'];
     //1. TODO: sort the "a" array, and display it via console.log (ascending)
+    a.sort();
+    console.log(a);
 
     var b = [
         {
@@ -44,9 +46,30 @@
     ];
     //2. TODO: sort the "b" array by the "order" field in each object using "natural order" sort (1,2,10,11,111 and NOT 1,10,11,111,2). Assume all order fields are numerical strings
     // output via console.log
+    b.sort(
+            function(x, y){
+                return x.order - y.order;
+            }
+    );
+    console.log(b);
+
+
 
     //3. TODO: create a "numericalSum" function which adds all numerical values from the array. The function should be applicable to all arrays (use Array.prototype)
     // requirements: the following calls should pass and not error out
+    Array.prototype.numericalSum = function(){
+        var sum = 0;
+        var len = this.length;
+        for (var i=0;i< len;i++){
+           if (!isNaN(this[i])){
+               sum += Number(this[i]);
+           }
+        }
+        return sum;
+    }
+
+
+
     var testArr = [2, 3, 4, '5', 'a', 'bb', 10];
 
     if (typeof testArr.numericalSum !== 'function') {
@@ -77,11 +100,50 @@
     // b. outputs each array on a separated line inside the #result div from above
     // c. at the beginning of each line, the sum of all elements from the array that's displayed on that line,
     // bolded (using the numericalSum() function)
+    var testSum= function () {
+        //a
+        var outArray = [];
+        for (var i= 0; i<10; i++){
+            var inArray = [];
+            for (var j=0;j<10;j++){
+                inArray[j] = Math.floor(Math.random() * 10);
+            }
+            outArray[i] = inArray;
+        }
+
+        //b + c
+        var resultDiv = document.getElementById("result");
+        var text="";
+        for (var i= 0; i<10; i++){
+            text += "<b>" + outArray[i].numericalSum() + "</b>" + " ";
+            for (var j=0;j<10;j++){
+                text += outArray[i][j] + " ";
+            }
+            text += "<br>";
+        }
+
+        resultDiv.innerHTML = text;
+
+    }
+    testSum();
+
 
 
     //5. TODO: create a function which returns a new object that has 100 fields, called field0 ... field99
     // and each field value is a random small letter (a-z)
     // a. the following should pass and not error out (assuming the function is called randomObject:
+
+    var randomObject = function(){
+        var letters = "abcdefghijklmnopqrstuvwxyz";
+        var newObject = {};
+        for (var i = 0; i<100; i++){
+            newObject["field"+i]= letters.charAt(Math.floor(Math.random() * letters.length))
+        }
+        return newObject;
+    }
+
+
+
     var generated = randomObject();
     if (!generated || typeof generated !== 'object') {
         throw new Error('not an object');
@@ -94,7 +156,13 @@
     }
     //b. TODO: iterate over the object fields and display each value of each field into a separate
     // <div> element inside the div#result-5 element
-
+    var divResult5 = document.getElementById("result-5");
+    for (var i in generated){
+        var newDiv = document.createElement("div");
+        var node = document.createTextNode(generated[i]);
+        newDiv.appendChild(node);
+        divResult5.appendChild(newDiv);
+    }
 
 </script>
 
