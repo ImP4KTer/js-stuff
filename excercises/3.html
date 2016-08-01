@@ -40,6 +40,17 @@
     // in order to achieve this, read the javascript window object reference from here: http://www.w3schools.com/jsref/obj_window.asp
     // in particular, setInterval() and setTimeout()
 
+    setInterval(
+            function(){
+                var d = new Date();
+                document.getElementsByClassName("hour").item(0).innerHTML = d.getHours();
+                document.getElementsByClassName("minute").item(0).innerHTML = d.getMinutes();
+                document.getElementsByClassName("second").item(0).innerHTML = d.getSeconds();
+                document.getElementsByClassName("millisecond").item(0).innerHTML = d.getMilliseconds();
+
+            }, 1 );
+
+
 </script>
 
 </body>
