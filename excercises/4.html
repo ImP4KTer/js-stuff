@@ -3,11 +3,42 @@
 <head>
 
     <style type="text/css">
+        body {
+            text-align: center;
+        }
+        .counter > span {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            font-size: 35px;
+            text-align: center;
+        }
 
+        .counter > span.sep {
+            width: auto;
+        }
     </style>
 
 </head>
 <body>
+
+<div class="counter">
+    <span id="day">00</span>
+    <span class="sep">:</span>
+    <span id="hour">00</span>
+    <span class="sep">:</span>
+    <span id="minute">00</span>
+    <span class="sep">:</span>
+    <span id="second">00</span>
+</div>
+<br>
+<label for="date">Date: <small>(year > 2016)</small></label>
+<input type="text" id="date" placeholder="Your date"><br><br>
+<label for="time">Time:  <small>(hh:mm:ss)</small></label>
+<input type="text" id="time" placeholder="Your time"><br><br>
+<button type="button" id="button" onclick="displayTime()">Submit</button>
+
 
 <!--
 TODO: ask the user for a valid date and time (use a text field for the date, and another one for the time)
@@ -19,6 +50,69 @@ TODO: it should be in the format: dd:hh:mm:ss (each component should stay in it'
 
 <script type="text/javascript">
     //TODO: javascript code should go here
+
+    function displayTime(){
+
+        var date = document.getElementById('date').value;
+        var time = document.getElementById('time').value;
+        if ( !validDate(date) ) {
+            alert("Incorrect date! Date format is yyyy-mm-dd. ");
+        } else if ( !validTime(time) ) {
+            alert("Incorrect time! Time format is hh:mm:ss. ");
+        } else {
+            setTime(!validTime(time));
+        }
+
+    }
+
+    function validDate(date) {
+
+        var re = /^\d{4}-\d{1,2}-\d{1,2}$/;
+        var date1 = new Date();
+        var date2 = new Date(date);
+        if ( date.match(re) == null || date1.getTime() > date2.getTime() )
+                return false;
+        return true;
+
+    }
+
+    function validTime(time) {
+
+        var re = /^([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/;
+        return time.match(re) != null;
+
+    }
+
+    function getRemainingTime (date) {
+
+        var current = new Date();
+        var time = Date.parse(date) - Date.parse(current);
+
+        var days = Math.floor(time / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((time / (1000 * 60 * 60)) % 24);
+        var minutes = Math.floor((time / 1000 / 60) % 60);
+        var seconds = Math.floor((time / 1000) % 60);
+        return {
+            'days': days,
+            'hours': hours,
+            'minutes': minutes,
+            'seconds': seconds
+        }
+
+
+    }
+
+    function setTime() {
+
+        var date = document.getElementById('date').value;
+        var time = document.getElementById('time').value;
+        var myObj = getRemainingTime(date + " " + time);
+        document.getElementById('day').innerHTML = myObj.days.toString();
+        document.getElementById('hour').innerHTML = myObj.hours.toString();
+        document.getElementById('minute').innerHTML = myObj.minutes.toString();
+        document.getElementById('second').innerHTML = myObj.seconds.toString();
+        setTimeout(setTime, 1000);
+    }
 
 </script>
 
