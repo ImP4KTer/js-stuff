@@ -3,11 +3,41 @@
 <head>
 
     <style type="text/css">
+        .red {
+            color: red;
+            font-weight: 700;
+            display: none;
+        }
 
+        #countdown {
+            display: none;
+        }
+
+        .numbers {
+            font-size: 40px;
+            color:goldenrod;
+        }
     </style>
 
 </head>
 <body>
+Insert Date: <input type="text" id="date"><span class="red" id="date-error">*Date must have yyyy-mm-dd format</span><br>
+Insert Time: <input type="text" id="time"><span class="red" id="time-error">*Time must have hh:mm:ss format</span><br>
+<button type="button" id="start">Set countdown</button>
+<span class="red" id="past_date_error">* Your date and time must be a future date</span>
+
+<div id="countdown">
+    <br><br>
+    <span id="days" class="numbers"></span>
+    <span class="sep"> days </span>
+    <span id="hour" class="numbers">22</span>
+    <span class="sep"> hours </span>
+    <span id="minute" class="numbers">23</span>
+    <span class="sep"> minutes </span>
+    <span id="second" class="numbers">23</span>
+    <span class="sep"> seconds </span>
+</div>
+
 
 <!--
 TODO: ask the user for a valid date and time (use a text field for the date, and another one for the time)
@@ -19,7 +49,101 @@ TODO: it should be in the format: dd:hh:mm:ss (each component should stay in it'
 
 <script type="text/javascript">
     //TODO: javascript code should go here
+    var insertedDate, insertedTime;
+    var miliseconds, seconds, minutes, hours, days;
 
+    var start = document.getElementById("start");
+    start.onclick = function () {
+        insertedDate = (document.getElementById("date")).value;
+        insertedTime = (document.getElementById("time")).value;
+        if (isValidDate(insertedDate) == true) {
+            document.getElementById("date-error").style.display = "none";
+            if (isValidTime(insertedTime) == true) {
+                document.getElementById("time-error").style.display = "none";
+                var current_date = new Date();
+                var splited_date = insertedDate.split('-');
+                var splited_time = insertedTime.split(':');
+                var selected_date = new Date(splited_date[0], splited_date[1], splited_date[2], splited_time[0], splited_time[1], splited_time[2], 0);
+                if (compareDates(selected_date, current_date) == 1) {
+                    document.getElementById("past_date_error").style.display = "none";
+                    ms = selected_date.getTime() - current_date.getTime();
+                    days = parseInt(ms / (1000 * 60 * 60 * 24)) - 31;
+                    ms = parseInt(ms % (1000 * 60 * 60 * 24));
+                    hours = parseInt(ms / (1000 * 60 * 60));
+                    ms = parseInt(ms % (1000 * 60 * 60));
+                    minutes = parseInt(ms / (1000 * 60));
+                    ms = parseInt(ms % (1000 * 60));
+                    seconds = parseInt(ms / (1000));
+                    miliseconds = ms;
+                    document.getElementById("countdown").style.display = "block";
+                } else {
+                    document.getElementById("past_date_error").style.display = "inline-block";
+                }
+            } else {
+                document.getElementById("time-error").style.display = "inline-block";
+            }
+        } else {
+            document.getElementById("date-error").style.display = "inline-block";
+        }
+    };
+
+    function isValidDate(date) {
+        var temp = date.split('-');
+        var d = new Date(temp[0] + '-' + temp[1] + '-' + temp[2]);
+        return (d && (d.getMonth() + 1) == temp[1] && d.getDate() == Number(temp[2]) && d.getFullYear() == Number(temp[0]));
+    }
+
+    function isValidTime(time) {
+        reg = /^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/;
+        return reg.test(time);
+    }
+
+    function compareDates(dateTimeA, dateTimeB) {
+        if (dateTimeA.getTime() > dateTimeB.getTime()) {
+            return 1;
+        }
+        else if (dateTimeA.getTime() === dateTimeB.getTime()) {
+            return 0;
+        }
+        else {
+            return -1;
+        }
+    }
+
+
+    var h = document.getElementById("hour");
+    var m = document.getElementById("minute");
+    var s = document.getElementById("second");
+    var d = document.getElementById("days");
+
+    var mili = new Date().getTime();
+    window.setInterval(function () {
+        var now = new Date().getTime();
+
+        miliseconds += now - mili;
+        if (miliseconds >= 1000) {
+            miliseconds = 0;
+            seconds--;
+        }
+        if (seconds == 0) {
+            seconds = 60;
+            minutes--;
+        }
+        if (minutes == 0) {
+            minutes = 60;
+            hours--;
+        }
+        if (hours == 0) {
+            hours = 24;
+            days--;
+        }
+
+        h.innerHTML = hours;
+        m.innerHTML = minutes;
+        s.innerHTML = seconds;
+        d.innerHTML = days;
+        mili = now;
+    }, 1);
 </script>
 
 </body>
