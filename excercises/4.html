@@ -48,10 +48,10 @@ TODO: it should be in the format: dd:hh:mm:ss (each component should stay in it'
 
 <script type="text/javascript">
     //TODO: javascript code should go here
-    function validateDate(date){
+    function validateDate(date, time){
         var regEx = /^\d{4}-\d{2}-\d{2}$/;
         var date1 = new Date();
-        var date2 = new Date(date);
+        var date2 = new Date(date+" "+time);
         if(date.match(regEx) == null || date1.getTime()>date2.getTime())
             return false;
         else
@@ -77,24 +77,29 @@ TODO: it should be in the format: dd:hh:mm:ss (each component should stay in it'
         };
     }
 
-    function setTime(){
-        var date = document.getElementById('date').value;
-        var time = document.getElementById('time').value;
+    function setTime(date, time){
         var obj = getTimeRemaining(date+" "+time);
         document.getElementById('day').innerHTML = obj.days.toString();
         document.getElementById('hour').innerHTML = obj.hours.toString();
         document.getElementById('minute').innerHTML = obj.minutes.toString();
         document.getElementById('second').innerHTML = obj.seconds.toString();
-        var t = setTimeout(setTime, 1000);
+        if(obj.days===0 && obj.hours==0 && obj.minutes===0 && obj.seconds===0){
+            alert("Game over!");
+        }
+        else {
+            setTimeout(function () {
+                setTime(date, time)}, 1000
+            );
+        }
     }
 
     function displayTime(){
         var date = document.getElementById('date').value;
         var time = document.getElementById('time').value;
-        if (!validateDate(date) || !validateTime(time))
+        if (!validateDate(date, time) || !validateTime(time))
             alert("Incorrect input! Date format: yyyy-mm-dd. Time format: hh:mm:ss");
         else{
-            setTime();
+            setTime(date, time);
         }
     }
 

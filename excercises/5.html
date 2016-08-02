@@ -58,16 +58,20 @@
         else
             pos=pos-1;
         document.getElementById('square').style.left = pos + "px";
+        document.getElementById('btn-start-animation').disabled=true;
         timer = setTimeout(startMoving, 10);
     }
 
     function pauseMoving(){
         window.clearTimeout(timer);
+        document.getElementById('btn-start-animation').disabled=false;
     }
 
     function stopMoving(){
         window.clearTimeout(timer);
         document.getElementById('square').style.left="0px";
+        document.getElementById('btn-start-animation').disabled=false;
+        direction=1;
     }
 
 </script>
